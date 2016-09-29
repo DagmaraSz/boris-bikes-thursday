@@ -30,6 +30,12 @@ describe 'docking_station' do
       station.dock(bike)
       expect(station.bike).to be(bike)
     end
+
+    it "doesn't take new bikes when full" do
+      station.dock(bike)
+      expect{station.dock(bike)}.to raise_error("No more spaces left")
+    end
+
   end
 
 end
