@@ -31,9 +31,8 @@ describe 'docking_station' do
       expect(station.bikes).to eq([bike])
     end
 
-    it "doesn't take new bikes when full (capacity of 20)" do
-      capacity = 20
-      expect{(capacity+1).times{station.dock(bike)}}.to raise_error("No more spaces left")
+    it "doesn't take new bikes when full" do
+      expect{(DockingStation::DEFAULT_CAPACITY+1).times{station.dock(bike)}}.to raise_error("No more spaces left")
     end
   end
 
