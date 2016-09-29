@@ -5,6 +5,7 @@ describe 'docking_station' do
   let(:station) {DockingStation.new} #optional, but is apparently better practice for instantiation
 
   context 'Empty Docking Station' do #context - the same thing as describe, just a convention, see link
+    let(:station2) {DockingStation.new(50)}
     it 'respond to release bike' do
       expect(station).to respond_to(:release_bike)
     end
@@ -15,6 +16,14 @@ describe 'docking_station' do
 
     it "doesn't release new bikes when no bikes" do
       expect{station.release_bike}.to raise_error("No more bikes you fool!")
+    end
+
+    it "has default capacity" do
+      expect(station.capacity).to eq(DockingStation::DEFAULT_CAPACITY)
+    end
+
+    it "has a variable capacity" do
+      expect(station2.capacity).to eq(50)
     end
   end
 
