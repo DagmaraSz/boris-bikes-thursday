@@ -28,14 +28,13 @@ describe 'docking_station' do
 
     it 'showed docked bikes' do
       station.dock(bike)
-      expect(station.bike).to be(bike)
+      expect(station.bikes).to eq([bike])
     end
 
-    it "doesn't take new bikes when full" do
-      station.dock(bike)
-      expect{station.dock(bike)}.to raise_error("No more spaces left")
+    it "doesn't take new bikes when full (capacity of 20)" do
+      capacity = 20
+      expect{(capacity+1).times{station.dock(bike)}}.to raise_error("No more spaces left")
     end
-
   end
 
 end
