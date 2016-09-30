@@ -10,14 +10,11 @@ class DockingStation
   def release_bike
     fail "No more bikes you fool!" if empty?
 
-
     for i in 0...@bikes.length
       if @bikes[i].working == true
         return @bikes.delete_at(i)
       end
     end
-  #  fail "Sorry broken, no!" unless @bikes[0].working
-    #@bikes.pop
     fail "No working bikes you fool!"
   end
 
