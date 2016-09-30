@@ -28,31 +28,35 @@ describe DockingStation do
 
   context 'Working bike docking subject functions' do
 
+    let(:bike) { double :bike }
+    let(:bike2) { double :bike }
+
     it 'gives bike' do
-      subject.dock double(:bike)
+      subject.dock(bike)
     end
 
     it 'showed docked bikes' do
-      subject.dock double(:bike)
-      expect(subject.bikes).to eq([double(:bike)])
+      subject.dock(bike)
+      expect(subject.bikes).to eq([bike])
     end
 
     it "doesn't take new bikes when full" do
-      expect{(DockingStation::DEFAULT_CAPACITY+1).times{subject.dock double(:bike)}}.to raise_error("No more spaces left")
+      expect{(DockingStation::DEFAULT_CAPACITY+1).times{subject.dock(bike)}}.to raise_error("No more spaces left")
     end
 
     it "only releases working bikes" do
-      subject.dock double(:bike)
-      double(:bike2).report_broken
-      subject.dock double(:bike2)
+      allow(bike).to receive(:working).and_return(true)
+      subject.dock(bike)
+      allow(bike2).to receive(:working).and_return(false)
+      subject.dock(bike2)
       expect(subject.release_bike.working).to be true
     end
 
     it "errors when all bikes are broken" do
-      double(:bike).report_broken
-      double(:bike2).report_broken
-      subject.dock double(:bike)
-      subject.dock double(:bike2)
+      allow(bike).to receive(:working).and_return(false)
+      allow(bike2).to receive(:working).and_return(false)
+      subject.dock(bike)
+      subject.dock(bike2)
       expect{subject.release_bike}.to raise_error("No working bikes you fool!")
     end
   end
