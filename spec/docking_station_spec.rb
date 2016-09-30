@@ -28,8 +28,8 @@ describe DockingStation do
 
   context 'Working bike docking subject functions' do
 
-    let(:bike) { double :bike }
-    let(:bike2) { double :bike }
+    let(:bike) { double(:working => true) }
+    let(:bike2) { double(:working => false) }
 
     it 'gives bike' do
       subject.dock(bike)
@@ -45,17 +45,13 @@ describe DockingStation do
     end
 
     it "only releases working bikes" do
-      allow(bike).to receive(:working).and_return(true)
       subject.dock(bike)
-      allow(bike2).to receive(:working).and_return(false)
       subject.dock(bike2)
       expect(subject.release_bike.working).to be true
     end
 
     it "errors when all bikes are broken" do
-      allow(bike).to receive(:working).and_return(false)
-      allow(bike2).to receive(:working).and_return(false)
-      subject.dock(bike)
+      subject.dock(bike2)
       subject.dock(bike2)
       expect{subject.release_bike}.to raise_error("No working bikes you fool!")
     end
