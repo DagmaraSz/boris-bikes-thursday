@@ -3,7 +3,7 @@ require './lib/bike'
 
 describe DockingStation do
 
-  context 'Empty Docking Station' do #context - the same thing as describe, just a convention, see link
+  context 'Empty Docking Station' do
     let(:station2) {DockingStation.new(50)}
     it 'respond to release bike' do
       expect(subject).to respond_to(:release_bike)
@@ -27,40 +27,32 @@ describe DockingStation do
   end
 
   context 'Working bike docking subject functions' do
-    let(:bike) {Bike.new}
-    let(:bike2) {Bike.new}
 
     it 'gives bike' do
-      subject.dock(bike) #turned out these were "bleeding" into the other test, so repeating is the only way I found to make things work :P
-      expect(subject.release_bike).to be_kind_of(Bike)
+      subject.dock double(:bike)
     end
 
     it 'showed docked bikes' do
-      subject.dock(bike)
-      expect(subject.bikes).to eq([bike])
+      subject.dock double(:bike)
+      expect(subject.bikes).to eq([double(:bike)])
     end
 
     it "doesn't take new bikes when full" do
-      expect{(DockingStation::DEFAULT_CAPACITY+1).times{subject.dock(bike)}}.to raise_error("No more spaces left")
+      expect{(DockingStation::DEFAULT_CAPACITY+1).times{subject.dock double(:bike)}}.to raise_error("No more spaces left")
     end
 
-#    it "it throws error when broken", focus: true do
-#      bike.report_broken
-#      expect{subject.release_bike}.to raise_error("Sorry broken, no!")
-#    end
-
     it "only releases working bikes" do
-      subject.dock(bike)
-      bike2.report_broken
-      subject.dock(bike2)
+      subject.dock double(:bike)
+      double(:bike2).report_broken
+      subject.dock double(:bike2)
       expect(subject.release_bike.working).to be true
     end
 
     it "errors when all bikes are broken" do
-      bike.report_broken
-      bike2.report_broken
-      subject.dock(bike)
-      subject.dock(bike2)
+      double(:bike).report_broken
+      double(:bike2).report_broken
+      subject.dock double(:bike)
+      subject.dock double(:bike2)
       expect{subject.release_bike}.to raise_error("No working bikes you fool!")
     end
   end
