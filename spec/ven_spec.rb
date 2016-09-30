@@ -9,7 +9,7 @@ describe Ven do
     expect(subject).to respond_to(:take_bikes).with(1).argument
   end
 
-  it 'takes a broken bike from a station', focus: true do
+  it 'takes a broken bike from a station' do
     station.dock(working_bike)
     station.dock(broken_bike)
     station.dock(broken_bike)
